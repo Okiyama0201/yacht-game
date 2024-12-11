@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-color: #f0f8ff;
 }
 
 header {
@@ -14,17 +15,16 @@ header {
     width: auto;
     border-collapse: collapse;
     text-align: left;
-    margin: 50px auto; /* 上下に50pxのスペース、左右中央配置 */
+    margin: 50px auto;
     border: 1px solid #000;
-    position: relative; /* 相対位置に設定 */
-    right: 250px; /* 中央から20px右に移動 */
+    position: relative;
+    right: 250px;
 }
 
-.custom-table th,
-.custom-table td {
+.custom-table th, .custom-table td {
     border: 2px solid #003366;
     padding: 5px 10px;
-    text-align: center; /* セル内を中央揃え */
+    text-align: center;
     white-space: nowrap;
 }
 
@@ -42,38 +42,48 @@ header {
 }
 
 .custom-table tr:nth-child(odd) {
-    background-color: #ECF0F1; /* 奇数行の背景色を設定 */
+    background-color: #ECF0F1;
 }
 
-.custom-table tr:nth-child(6) {
-    background-color: #7F8C98; /* 合計行の背景色 */
+.custom-table tr.total {
+    background-color: #7F8C98;
+    color: #ffffff;
 }
 
-.custom-table tr:nth-child(7) {
-    background-color: #7F8C98; /* ボーナス行の背景色 */
+.custom-table tr.bonus {
+    background-color: #7F8C98;
+    color: #ffffff;
 }
 
-.custom-table tr:hover {
-    background-color: #f1f1f1;
+#diceArea {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
 }
 
-.total td {
-    color: #ffffff; /* 合計行の文字色を赤に */
+.dice {
+    width: 50px;
+    height: 50px;
+    margin: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #f4f4f4;
+    border: 2px solid #000;
+    cursor: pointer;
 }
 
-.bonus td {
-    color: #ffffff; /* ボーナス行の文字色を青に */
+.dice.held {
+    background-color: #add8e6;
+    border-color: #003366;
 }
 
-/* 各列の幅を固定 */
-.custom-table td:nth-child(1), .custom-table th:nth-child(1) {
-    width: 100px; /* 1列目の幅を固定 */
-}
-
-.custom-table td:nth-child(2), .custom-table th:nth-child(2) {
-    width: 70px; /* 2列目の幅を固定 */
-}
-
-.custom-table td:nth-child(3), .custom-table th:nth-child(3) {
-    width: 70px; /* 3列目の幅を固定 */
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
