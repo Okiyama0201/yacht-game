@@ -1,95 +1,78 @@
-const diceArea = document.getElementById("diceArea");
-const rollDiceButton = document.getElementById("rollDice");
-let diceValues = [0, 0, 0, 0, 0]; // サイコロの値を格納
-let holdStatus = [false, false, false, false, false]; // サイコロのホールド状態を格納
+// 初期状態
+let currentTurn = 1; // 現在のターン
+let currentPlayer = 1; // 現在のプレイヤー (1P or 2P)
+let diceValues = [1, 1, 1, 1, 1]; // ダイスの目
+let heldDice = [false, false, false, false, false]; // 各ダイスのホールド状態
 
-// ダイスを振る処理
+// ターン情報の更新
+function updateTurnInfo() {
+    document.getElementById("turn-info").textContent =
+        `${currentTurn}ターン目: 現在のプレイヤー - ${currentPlayer === 1 ? "1P" : "2P"}`;
+}
+
+// ダイスを振る
 function rollDice() {
-    diceValues = diceValues.map((value, index) => {
-        if (!holdStatus[index]) {
-            return Math.floor(Math.random() * 6) + 1; // 1〜6のランダムな値を生成
+    for (let i = 0; i < diceValues.length; i++) {
+        if (!heldDice[i]) {
+            diceValues[i] = Math.floor(Math.random() * 6) + 1; // 1〜6の乱数
         }
-        return value; // ホールドされているサイコロは変更しない
-    });
+    }
     updateDiceDisplay();
-    calculateScores(); // 振り直し後に役を再計算
+    calculateScores();
 }
 
-// サイコロの表示を更新する
+// ダイス表示を更新
 function updateDiceDisplay() {
-    diceArea.innerHTML = ""; // サイコロエリアをクリア
-    diceValues.forEach((value, index) => {
-        const dice = document.createElement("div");
-        dice.classList.add("dice");
-        dice.id = `dice-${index}`;
-        dice.textContent = value > 0 ? value : ""; // サイコロが未設定の場合は空欄
-        if (holdStatus[index]) dice.classList.add("held"); // ホールド中の場合スタイルを変更
-        dice.onclick = () => toggleHold(index); // クリックでホールド切り替え
-        diceArea.appendChild(dice);
-    });
+    for (let i = 0; i < diceValues.length; i++) {
+        const dice = document.getElementById(`dice${i + 1}`);
+        dice.textContent = diceValues[i];
+        dice.classList.toggle("held", heldDice[i]); // ホールド中のダイスにクラスを適用
+    }
 }
 
-// サイコロのホールド状態を切り替える
+// ダイスをホールド/解除
 function toggleHold(index) {
-    holdStatus[index] = !holdStatus[index]; // 状態を反転
-    updateDiceDisplay(); // 表示を更新
+    heldDice[index] = !heldDice[index];
+    updateDiceDisplay();
 }
 
-// 役の得点を計算する
+// 得点を計算
 function calculateScores() {
     const scoreTable = {
-        ones: calculateSumForNumber(1),
-        twos: calculateSumForNumber(2),
-        threes: calculateSumForNumber(3),
-        fours: calculateSumForNumber(4),
-        fives: calculateSumForNumber(5),
-        sixes: calculateSumForNumber(6),
+        ones: diceValues.filter(v => v === 1).length * 1,
+        twos: diceValues.filter(v => v === 2).length * 2,
+        threes: diceValues.filter(v => v === 3).length * 3,
+        fours: diceValues.filter(v => v === 4).length * 4,
+        fives: diceValues.filter(v => v === 5).length * 5,
+        sixes: diceValues.filter(v => v === 6).length * 6,
         threeOfAKind: hasOfAKind(3) ? diceValues.reduce((a, b) => a + b, 0) : 0,
         fourOfAKind: hasOfAKind(4) ? diceValues.reduce((a, b) => a + b, 0) : 0,
         fullHouse: isFullHouse() ? 25 : 0,
         smallStraight: isSmallStraight() ? 15 : 0,
         largeStraight: isLargeStraight() ? 30 : 0,
         yacht: hasOfAKind(5) ? 50 : 0,
-        chance: diceValues.reduce((a, b) => a + b, 0),
     };
 
+    // 表にスコアを反映
     updateScoreTable(scoreTable);
 }
 
-// 指定した目の合計を計算
-function calculateSumForNumber(number) {
-    return diceValues.filter(v => v === number).length * number;
-}
-
-// 同じ目が "count" 個揃っているか判定
-function hasOfAKind(count) {
-    const counts = {};
-    diceValues.forEach(v => {
-        counts[v] = (counts[v] || 0) + 1;
-    });
-    return Object.values(counts).some(v => v >= count);
-}
-
-// その他の役判定関数は前述のコードと同じ（省略可能）
-
-// スコア表を更新する
-function updateScoreTable(scoreTable) {
+// スコアを表に表示
+function updateScoreTable(scores) {
     const rows = document.querySelectorAll(".custom-table tbody tr");
-    const scoreKeys = [
-        "ones", "twos", "threes", "fours", "fives", "sixes",
-        "threeOfAKind", "fourOfAKind", "fullHouse",
-        "smallStraight", "largeStraight", "yacht", "chance",
-    ];
-
+    const keys = Object.keys(scores);
     rows.forEach((row, index) => {
-        const cells = row.querySelectorAll("td");
-        if (index < scoreKeys.length) {
-            const key = scoreKeys[index];
-            cells[1].textContent = scoreTable[key]; // 1Pのスコア
-            cells[2].textContent = scoreTable[key]; // 2Pのスコア
-        }
+        const scoreCell = row.children[currentPlayer];
+        scoreCell.textContent = scores[keys[index]] || 0;
     });
 }
 
-rollDiceButton.addEventListener("click", rollDice);
+// イベントリスナー
+document.getElementById("roll-button").addEventListener("click", rollDice);
+for (let i = 0; i < diceValues.length; i++) {
+    document.getElementById(`dice${i + 1}`).addEventListener("click", () => toggleHold(i));
+}
+
+// 初期化
+updateTurnInfo();
 updateDiceDisplay();
