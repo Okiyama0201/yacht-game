@@ -8,6 +8,7 @@
 </head>
 <body>
     <header>ヨットゲーム</header>
+    <div id="turn-info">1ターン目: 現在のプレイヤー - 1P</div>
     <table class="custom-table">
         <thead>
             <tr>
@@ -20,25 +21,56 @@
             </tr>
         </thead>
         <tbody>
-            <tr><td>ツーズ</td><td></td><td></td></tr>
-            <tr><td>スリーズ</td><td></td><td></td></tr>
-            <tr><td>フォーズ</td><td></td><td></td></tr>
-            <tr><td>ファイブズ</td><td></td><td></td></tr>
-            <tr><td>シックス</td><td></td><td></td></tr>
-            <tr class="total"><td>合計</td><td>0</td><td>0</td></tr>
-            <tr class="bonus"><td>ボーナス</td><td></td><td></td></tr>
-            <tr><td>スリーオブアカインド</td><td></td><td></td></tr>
-            <tr><td>フォーオブアカインド</td><td></td><td></td></tr>
-            <tr><td>フルハウス</td><td></td><td></td></tr>
-            <tr><td>スモールストレート</td><td></td><td></td></tr>
-            <tr><td>ラージストレート</td><td></td><td></td></tr>
-            <tr><td>ヨット</td><td></td><td></td></tr>
-            <tr><td>チャンス</td><td></td><td></td></tr>
+            <tr>
+                <td>ツーズ</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>スリーズ</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>フォーズ</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>ファイブズ</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>シックス</td><td></td><td></td>
+            </tr>
+            <tr class="total">
+                <td>合計</td><td>0</td><td>0</td>
+            </tr>
+            <tr class="bonus">
+                <td>ボーナス</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>スリーオブアカインド</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>フォーオブアカインド</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>フルハウス</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>スモールストレート</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>ラージストレート</td><td></td><td></td>
+            </tr>
+            <tr>
+                <td>ヨット</td><td></td><td></td>
+            </tr>
         </tbody>
     </table>
 
-    <div id="diceArea"></div>
-    <button id="rollDice">ダイスを振る</button>
+    <div class="dice-container">
+        <div class="dice" id="dice1">1</div>
+        <div class="dice" id="dice2">1</div>
+        <div class="dice" id="dice3">1</div>
+        <div class="dice" id="dice4">1</div>
+        <div class="dice" id="dice5">1</div>
+        <button id="roll-button">ダイスを振る</button>
+    </div>
 
     <script src="script.js"></script>
 </body>
