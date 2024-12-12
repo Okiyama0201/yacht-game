@@ -36,8 +36,6 @@ function toggleHold(index) {
     updateDiceDisplay();
 }
 
-//スリーオブアカインドの計算
-
 
 // 得点を計算
 function calculateScores() {
