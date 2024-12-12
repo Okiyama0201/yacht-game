@@ -67,6 +67,48 @@ function updateScoreTable(scores) {
     });
 }
 
+// n個の同じ数字が存在するかどうかをチェック
+function hasOfAKind(n) {
+    const counts = {};
+    for (let i = 0; i < diceValues.length; i++) {
+        const value = diceValues[i];
+        counts[value] = (counts[value] || 0) + 1;
+    }
+    return Object.values(counts).some(count => count >= n);
+}
+
+// フルハウスが存在するかどうかをチェック
+function isFullHouse() {
+    const counts = {};
+    for (let i = 0; i < diceValues.length; i++) {
+        const value = diceValues[i];
+        counts[value] = (counts[value] || 0) + 1;
+    }
+    return Object.values(counts).some(count => count === 3) && Object.values(counts).some(count => count === 2);
+}
+
+// 小さいストレートが存在するかどうかをチェック
+function isSmallStraight() {
+    const values = diceValues.slice().sort((a, b) => a - b);
+    for (let i = 0; i < values.length - 3; i++) {
+        if (values[i] + 1 === values[i + 1] && values[i + 1] + 1 === values[i + 2] && values[i + 2] + 1 === values[i + 3]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// 大きいストレートが存在するかどうかをチェック
+function isLargeStraight() {
+    const values = diceValues.slice().sort((a, b) => a - b);
+    for (let i = 0; i < values.length - 4; i++) {
+        if (values[i] + 1 === values[i + 1] && values[i + 1] + 1 === values[i + 2] && values[i + 2] + 1 === values[i + 3] && values[i + 3] + 1 === values[i + 4]) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // イベントリスナー
 document.getElementById("roll-button").addEventListener("click", rollDice);
 for (let i = 0; i < diceValues.length; i++) {
