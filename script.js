@@ -3,22 +3,31 @@ let currentTurn = 1;
 let currentPlayer = 1;
 let diceValues = [1, 1, 1, 1, 1];
 let heldDice = [false, false, false, false, false];
+let rollCount = 0; // 振り直し回数を追加
 
 // ターン情報の更新
 function updateTurnInfo() {
     document.getElementById("turn-info").textContent =
-        `${currentTurn}ターン目: 現在のプレイヤー - ${currentPlayer === 1 ? "1P" : "2P"}`;
+        `${currentTurn}ターン目: 現在のプレイヤー - ${currentPlayer === 1 ? "1P" : "2P"} (振り直し回数: ${rollCount}/3)`;
 }
 
 // ダイスを振る
 function rollDice() {
+    if (rollCount >= 3) {
+        alert("このターンでの振り直し回数は3回までです！");
+        return;
+    }
+
     for (let i = 0; i < diceValues.length; i++) {
         if (!heldDice[i]) {
             diceValues[i] = Math.floor(Math.random() * 6) + 1;
         }
     }
+
+    rollCount++; // 振り直し回数を増加
     updateDiceDisplay();
     calculateScores();
+    updateTurnInfo();
 }
 
 // ダイス表示を更新
@@ -32,6 +41,10 @@ function updateDiceDisplay() {
 
 // ダイスをホールド/解除
 function toggleHold(index) {
+    if (rollCount === 0) { // 1回目の振りではホールドを無効にする
+        alert("最初の振りではホールドできません！");
+        return;
+    }
     heldDice[index] = !heldDice[index];
     updateDiceDisplay();
 }
@@ -92,8 +105,6 @@ function updateScoreTable(scores) {
     });
 }
 
-// その他の関数はそのまま
-
 // n個の同じ数字が存在するかどうかをチェック
 function hasOfAKind(n) {
     const counts = {};
@@ -133,6 +144,7 @@ function nextTurn() {
     } else {
         updateTurnInfo();
         resetDice();
+        rollCount = 0; // 振り直し回数をリセット
     }
 }
 
