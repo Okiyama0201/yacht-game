@@ -36,16 +36,10 @@ function toggleHold(index) {
     updateDiceDisplay();
 }
 
-// スリーオブアカインドの計算
-function calculateThreeOfAKind() {
-    if (hasOfAKind(3)) {
-        return diceValues.reduce((a, b) => a + b, 0); // 5つのダイスの合計を返す
-    } else {
-        return 0; // 条件を満たさない場合は0を返す
-    }
-}
+//スリーオブアカインドの計算
 
-// スコアを計算
+
+// 得点を計算
 function calculateScores() {
     const scoreTable = {
         ones: diceValues.filter(v => v === 1).length * 1,
@@ -54,7 +48,6 @@ function calculateScores() {
         fours: diceValues.filter(v => v === 4).length * 4,
         fives: diceValues.filter(v => v === 5).length * 5,
         sixes: diceValues.filter(v => v === 6).length * 6,
-        threeOfAKind: calculateThreeOfAKind(), // スリーオブアカインドのスコアを計算
     };
 
     // 表にスコアを反映
@@ -67,11 +60,7 @@ function updateScoreTable(scores) {
     const keys = Object.keys(scores);
     rows.forEach((row, index) => {
         const scoreCell = row.children[currentPlayer];
-        if (index === 7) { // スリーオブアカインドの行
-            scoreCell.textContent = scores[keys[index]] || 0; // スリーオブアカインドのスコアを表示
-        } else {
-            scoreCell.textContent = scores[keys[index]] || 0; // 他のスコアを表示
-        }
+        scoreCell.textContent = scores[keys[index]] || 0;
     });
 }
 
