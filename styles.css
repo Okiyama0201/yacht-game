@@ -1,127 +1,79 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f7f9fc;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 header {
-    text-align: center;
+    background-color: #333;
+    color: white;
+    padding: 10px;
     font-size: 24px;
-    font-weight: bold;
-    margin: 20px 0;
 }
 
 #turn-info {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 20px;
+    margin: 10px 0;
 }
 
 .custom-table {
-    width: auto;
+    margin: 20px auto;
     border-collapse: collapse;
-    text-align: left;
-    margin: 50px auto; /* 上下に50pxのスペース、左右中央配置 */
-    border: 1px solid #000;
-    position: relative;
+    width: 60%;
 }
 
-.custom-table th,
-.custom-table td {
-    border: 2px solid #003366;
-    padding: 5px 10px;
-    text-align: center; /* セル内を中央揃え */
-    white-space: nowrap;
+.custom-table th, .custom-table td {
+    border: 1px solid #333;
+    padding: 8px;
+    text-align: center;
 }
 
-.custom-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
+.custom-table thead {
+    background-color: #555;
+    color: white;
 }
 
-.custom-table td {
-    text-align: left;
+.custom-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-.custom-table tr:nth-child(even) {
-    background-color: #E3E8EA;
-}
-
-.custom-table tr:nth-child(odd) {
-    background-color: #ECF0F1; /* 奇数行の背景色を設定 */
-}
-
-.custom-table tr:nth-child(7) {
-    background-color: #7F8C98; /* 合計行の背景色 */
-}
-
-.custom-table tr:nth-child(8) {
-    background-color: #7F8C98; /* ボーナス行の背景色 */
-}
-
-.custom-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-.total td {
-    color: #ffffff; /* 合計行の文字色 */
-}
-
-.bonus td {
-    color: #ffffff; /* ボーナス行の文字色 */
-}
-
-/* 各列の幅を固定 */
-.custom-table td:nth-child(1), .custom-table th:nth-child(1) {
-    width: 100px; /* 1列目の幅を固定 */
-}
-
-.custom-table td:nth-child(2), .custom-table th:nth-child(2) {
-    width: 70px; /* 2列目の幅を固定 */
-}
-
-.custom-table td:nth-child(3), .custom-table th:nth-child(3) {
-    width: 70px; /* 3列目の幅を固定 */
-}
-
-/* ダイスのコンテナ */
 .dice-container {
-    position: absolute;
-    top: 150px; /* 表の高さに合わせて調整 */
-    right: 50px;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
 }
 
-/* ダイスのデザイン */
 .dice {
     width: 50px;
     height: 50px;
-    line-height: 50px;
-    border: 2px solid #003366;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+    margin: 0 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #333;
     cursor: pointer;
     user-select: none;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: white;
 }
 
 .dice.held {
-    background-color: #ffc107; /* ホールド中のダイスを目立たせる */
+    background-color: #ddd;
+    border-color: #777;
 }
 
-/* 振るボタン */
-#roll-button {
-    margin-top: 20px;
+button {
+    margin-left: 15px;
     padding: 10px 20px;
     font-size: 16px;
-    font-weight: bold;
-    background-color: #003366;
+    cursor: pointer;
+    background-color: #333;
     color: white;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
 }
