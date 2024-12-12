@@ -51,11 +51,11 @@ header {
     background-color: #ECF0F1; /* 奇数行の背景色を設定 */
 }
 
-.custom-table tr:nth-child(6) {
+.custom-table tr:nth-child(7) {
     background-color: #7F8C98; /* 合計行の背景色 */
 }
 
-.custom-table tr:nth-child(7) {
+.custom-table tr:nth-child(8) {
     background-color: #7F8C98; /* ボーナス行の背景色 */
 }
 
