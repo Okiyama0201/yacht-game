@@ -45,12 +45,6 @@ function calculateScores() {
         fours: diceValues.filter(v => v === 4).length * 4,
         fives: diceValues.filter(v => v === 5).length * 5,
         sixes: diceValues.filter(v => v === 6).length * 6,
-        threeOfAKind: hasOfAKind(3) ? diceValues.reduce((a, b) => a + b, 0) : 0,
-        fourOfAKind: hasOfAKind(4) ? diceValues.reduce((a, b) => a + b, 0) : 0,
-        fullHouse: isFullHouse() ? 25 : 0,
-        smallStraight: isSmallStraight() ? 15 : 0,
-        largeStraight: isLargeStraight() ? 30 : 0,
-        yacht: hasOfAKind(5) ? 50 : 0,
     };
 
     // 表にスコアを反映
@@ -77,37 +71,6 @@ function hasOfAKind(n) {
     return Object.values(counts).some(count => count >= n);
 }
 
-// フルハウスが存在するかどうかをチェック
-function isFullHouse() {
-    const counts = {};
-    for (let i = 0; i < diceValues.length; i++) {
-        const value = diceValues[i];
-        counts[value] = (counts[value] || 0) + 1;
-    }
-    return Object.values(counts).some(count => count === 3) && Object.values(counts).some(count => count === 2);
-}
-
-// 小さいストレートが存在するかどうかをチェック
-function isSmallStraight() {
-    const values = diceValues.slice().sort((a, b) => a - b);
-    for (let i = 0; i < values.length - 3; i++) {
-        if (values[i] + 1 === values[i + 1] && values[i + 1] + 1 === values[i + 2] && values[i + 2] + 1 === values[i + 3]) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// 大きいストレートが存在するかどうかをチェック
-function isLargeStraight() {
-    const values = diceValues.slice().sort((a, b) => a - b);
-    for (let i = 0; i < values.length - 4; i++) {
-        if (values[i] + 1 === values[i + 1] && values[i + 1] + 1 === values[i + 2] && values[i + 2] + 1 === values[i + 3] && values[i + 3] + 1 === values[i + 4]) {
-            return true;
-        }
-    }
-    return false;
-}
 
 // イベントリスナー
 document.getElementById("roll-button").addEventListener("click", rollDice);
