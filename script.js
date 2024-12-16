@@ -5,11 +5,39 @@ let diceValues = [1, 1, 1, 1, 1];
 let heldDice = [false, false, false, false, false];
 let rollCount = 0; // 振り直し回数を追加
 
-// ターン情報の更新
-function updateTurnInfo() {
-    document.getElementById("turn-info").textContent =
-        `${currentTurn}ターン目: 現在のプレイヤー - ${currentPlayer === 1 ? "1P" : "2P"} (振り直し回数: ${rollCount}/3)`;
-}
+// プレイヤーのスコアを保持するオブジェクト
+let playerScores = {
+    1: { // プレイヤー1
+        ones: null,
+        twos: null,
+        threes: null,
+        fours: null,
+        fives: null,
+        sixes: null,
+        threeOfAKind: null,
+        fourOfAKind: null,
+        fullHouse: null,
+        smallStraight: null,
+        largeStraight: null,
+        yacht: null,
+        chance: null
+    },
+    2: { // プレイヤー2
+        ones: null,
+        twos: null,
+        threes: null,
+        fours: null,
+        fives: null,
+        sixes: null,
+        threeOfAKind: null,
+        fourOfAKind: null,
+        fullHouse: null,
+        smallStraight: null,
+        largeStraight: null,
+        yacht: null,
+        chance: null
+    }
+};
 
 // ダイスを振る
 function rollDice() {
@@ -27,8 +55,16 @@ function rollDice() {
     rollCount++; // 振り直し回数を増加
     updateDiceDisplay();
     calculateScores();
-    updateTurnInfo();
+    updateTurnInfo();  // 振り直し回数が反映されるように更新
 }
+
+
+// ターン情報の更新
+function updateTurnInfo() {
+    document.getElementById("turn-info").textContent =
+        `${currentTurn}ターン目: 現在のプレイヤー - ${currentPlayer === 1 ? "1P" : "2P"} (振り直し回数: ${rollCount}/3)`;
+}
+
 
 // ダイス表示を更新
 function updateDiceDisplay() {
@@ -75,6 +111,8 @@ function calculateScores() {
     updateScoreTable(scoreTable);
 }
 
+
+
 // スコアを表に表示
 function updateScoreTable(scores) {
     const rows = document.querySelectorAll(".custom-table tbody tr");
@@ -95,15 +133,41 @@ function updateScoreTable(scores) {
         chance: 14,
     };
 
-    Object.keys(scores).forEach(key => {
+    let subtotal = 0; // 小計の計算用
+
+    // ワンズからシックスまでのスコアのみ加算
+    Object.keys(scores).forEach((key) => {
         const rowIndex = mapping[key];
         if (rowIndex !== undefined) {
             const row = rows[rowIndex];
             const scoreCell = row.children[currentPlayer];
-            scoreCell.textContent = scores[key];
+
+            // セルがロックされていない場合のみ値を更新
+            if (!scoreCell.classList.contains("locked")) {
+                scoreCell.textContent = scores[key];
+            }
+
+            // ロックされたセルのスコアを合計
+            if (scoreCell.classList.contains("locked") && rowIndex < 6) { // ワンズからシックスまで
+                subtotal += parseInt(scoreCell.textContent, 10) || 0;
+            }
         }
     });
+
+    // 小計行にロックされたセルの合計を表示
+    const subtotalRow = rows[6];  // 小計行 (通常は7行目)
+    const subtotalCell = subtotalRow.children[currentPlayer];
+
+    if (!subtotalCell.classList.contains("locked")) {
+        subtotalCell.textContent = `${subtotal}/63`;
+    }
+
+    // ワンズからシックスの合計を更新
+    updateTotalScore();
 }
+
+
+
 
 // n個の同じ数字が存在するかどうかをチェック
 function hasOfAKind(n) {
@@ -131,7 +195,7 @@ function isLargeStraight() {
     return uniqueValues === "12345" || uniqueValues === "23456";
 }
 
-// 次のターン
+// ターンの開始時にリセット
 function nextTurn() {
     currentPlayer = currentPlayer === 1 ? 2 : 1;
 
@@ -142,11 +206,12 @@ function nextTurn() {
     if (currentTurn > 13) {
         endGame();
     } else {
-        updateTurnInfo();
+        rollCount = 0;  // 振り直し回数をリセット
+        updateTurnInfo();  // ターン情報を更新
         resetDice();
-        rollCount = 0; // 振り直し回数をリセット
     }
 }
+
 
 // ゲーム終了処理
 function endGame() {
@@ -165,6 +230,143 @@ document.getElementById("roll-button").addEventListener("click", rollDice);
 for (let i = 0; i < diceValues.length; i++) {
     document.getElementById(`dice${i + 1}`).addEventListener("click", () => toggleHold(i));
 }
+
+// スコアがロックされた時に記録する
+function lockScore(clickedCell) {
+    const scoreValue = parseInt(clickedCell.textContent, 10); // セル内の数字を取得
+    const role = clickedCell.getAttribute("data-role"); // 役名を取得
+
+    // プレイヤーのスコアに記録
+    if (currentPlayer === 1) {
+        playerScores[1][role] = scoreValue;
+    } else {
+        playerScores[2][role] = scoreValue;
+    }
+
+    console.log(`プレイヤー${currentPlayer}が選択した役: ${role}、得点: ${scoreValue}`);
+
+    // セルをロック
+    clickedCell.classList.add("locked"); // セルをロック
+    clickedCell.style.backgroundColor = "lightgray"; // 視覚的に固定されたことを示す
+    clickedCell.style.cursor = "not-allowed"; // ポインタを変更
+
+    // 次のプレイヤーへ移行
+    nextTurn();
+}
+
+// 小計を更新
+function updateSubtotal() {
+    const rows = document.querySelectorAll(".custom-table tbody tr");
+    const subtotalRow = rows[6];  // 小計行 (通常は7行目)
+    const subtotalCell1P = subtotalRow.children[1];  // プレイヤー1の小計セル
+    const subtotalCell2P = subtotalRow.children[2];  // プレイヤー2の小計セル
+
+    let subtotal = 0;
+
+    // ワンズからシックスまでのスコアを加算
+    for (let i = 0; i < 6; i++) { // ワンズからシックスまで
+        const scoreCell = rows[i].children[currentPlayer]; // ワンズ行からシックス行
+        if (scoreCell.classList.contains("locked")) {
+            subtotal += parseInt(scoreCell.textContent, 10) || 0; // スコアがロックされていれば加算
+        }
+    }
+
+    // 小計をセルに表示
+    if (currentPlayer === 1) {
+        subtotalCell1P.textContent = `${subtotal}/63`;
+    } else {
+        subtotalCell2P.textContent = `${subtotal}/63`;
+    }
+}
+
+// 初期化時に小計セルに0/63を表示
+function initializeScoreTable() {
+    const rows = document.querySelectorAll(".custom-table tbody tr");
+    const subtotalRow = rows[6];  // 小計行 (通常は7行目)
+    const subtotalCell1P = subtotalRow.children[1];  // プレイヤー1の小計セル
+    const subtotalCell2P = subtotalRow.children[2];  // プレイヤー2の小計セル
+
+    subtotalCell1P.textContent = "0/63"; // 初期値
+    subtotalCell2P.textContent = "0/63"; // 初期値
+}
+
+// ゲーム開始時に初期化を実行
+initializeScoreTable();
+
+// スコア表にクリックイベントを追加
+const scoreTableCells = document.querySelectorAll(".custom-table tbody td");
+
+// 各セルにクリックイベントを設定
+scoreTableCells.forEach((cell) => {
+    cell.addEventListener("click", (event) => {
+        const clickedCell = event.target;
+
+        // 現在のプレイヤーに対応する列番号
+        const currentColumnIndex = currentPlayer; // 1P=1, 2P=2
+
+        // セルが現在のプレイヤーの列かどうかを確認
+        const cellColumnIndex = Array.from(clickedCell.parentNode.children).indexOf(clickedCell);
+
+        // 列が一致しない場合は選択できない
+        if (cellColumnIndex !== currentColumnIndex) {
+            alert("現在のプレイヤーの列しか選択できません！");
+            return;
+        }
+
+        // セルがすでに固定されている場合はクリックを無効化
+        if (clickedCell.classList.contains("locked")) {
+            alert("このセルはすでに選択されています！");
+            return;
+        }
+
+        // セルの内容が数字かどうかを判定
+        const cellValue = clickedCell.textContent.trim();
+        const row = clickedCell.parentNode;
+
+        // 「小計」や「ボーナス」行の場合、数字を空白にしない
+        if (row.children[0].textContent.includes("小計") || row.children[0].textContent.includes("ボーナス")) {
+            // 何もしない
+            alert("この行は空白にできません！");
+            return;
+        }
+
+        if (!isNaN(cellValue) && cellValue !== "") {
+            // 選択したセルをロック（固定）
+            clickedCell.classList.add("locked"); // セルをロック
+            clickedCell.style.backgroundColor = "lightgray"; // 視覚的に固定されたことを示す
+            clickedCell.style.cursor = "not-allowed"; // ポインタを変更
+
+            // 現在のプレイヤーの列の中で、固定されていないセルの数字を空白にする
+            const rows = document.querySelectorAll(".custom-table tbody tr");
+            rows.forEach((row) => {
+                const currentPlayerCell = row.children[currentColumnIndex]; // 現在のプレイヤーのセルを取得
+                const allCellsInRow = row.children;
+
+                Array.from(allCellsInRow).forEach((cell, index) => {
+                    // 現在のプレイヤーの列内で、ロックされていないセルの数字を空白にする
+                    if (index === currentColumnIndex && !cell.classList.contains("locked")) {
+                        // 「小計」や「ボーナス」の行はスキップ
+                        if (row.children[0].textContent.includes("小計") || row.children[0].textContent.includes("ボーナス")) {
+                            return;
+                        }
+                        cell.textContent = ""; // 数字を空白にする
+                    }
+                });
+            });
+
+            // 固定されたセルの数字を保持
+            const score = parseInt(cellValue, 10); // セル内の数字を取得
+            console.log(`プレイヤー${currentPlayer}が選択したスコア: ${score}`);
+
+            // 次のプレイヤーへ移行
+            nextTurn();
+        } else {
+            // 数字がないセルを選択した場合の処理
+            alert("このセルは選択できません");
+        }
+    });
+});
+
 
 // 初期化
 updateTurnInfo();
