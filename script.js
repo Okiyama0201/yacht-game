@@ -166,6 +166,19 @@ for (let i = 0; i < diceValues.length; i++) {
     document.getElementById(`dice${i + 1}`).addEventListener("click", () => toggleHold(i));
 }
 
+// script.js
+document.addEventListener("DOMContentLoaded", () => {
+  const table = document.getElementById("custom-table");
+
+  // テーブルの全セルにイベントを追加
+  table.addEventListener("click", (event) => {
+    // クリックされた要素が <td> の場合のみ処理する
+    if (event.target.tagName === "TD") {
+      const cellValue = event.target.textContent;
+    }
+  });
+});
+
 // 初期化
 updateTurnInfo();
 updateDiceDisplay();
