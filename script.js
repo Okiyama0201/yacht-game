@@ -63,6 +63,9 @@ function rollDice() {
 function updateTurnInfo() {
     document.getElementById("turn-info").textContent =
         `${currentTurn}ターン目: 現在のプレイヤー - ${currentPlayer === 1 ? "1P" : "2P"} (振り直し回数: ${rollCount}/3)`;
+    // 小計を更新
+    updateSubtotal();  // 役を決めたタイミングで小計を更新
+    updateBonus();
 }
 
 
@@ -254,6 +257,29 @@ function lockScore(clickedCell) {
     nextTurn();
 }
 
+// 小計のセルの値を取得してボーナスを計算する関数
+function updateBonus(player) {
+    const subtotal1P = parseInt(document.querySelector('tr:nth-child(7) td:nth-child(2)').innerText, 10); // 1Pの小計
+    const subtotal2P = parseInt(document.querySelector('tr:nth-child(7) td:nth-child(3)').innerText, 10); // 2Pの小計
+
+    // ボーナスを設定するセルを取得
+    const bonus1P = document.getElementById('bonus-1p');
+    const bonus2P = document.getElementById('bonus-2p');
+
+    // 1Pまたは2Pの小計が63以上ならボーナス35を表示
+    if (subtotal1P >= 63) {
+        bonus1P.innerText = 35;
+    } else {
+        bonus1P.innerText = "";
+    }
+
+    if (subtotal2P >= 63) {
+        bonus2P.innerText = 35;
+    } else {
+        bonus2P.innerText = "";
+    }
+}
+
 // 小計を更新
 function updateSubtotal() {
     const rows = document.querySelectorAll(".custom-table tbody tr");
@@ -261,23 +287,30 @@ function updateSubtotal() {
     const subtotalCell1P = subtotalRow.children[1];  // プレイヤー1の小計セル
     const subtotalCell2P = subtotalRow.children[2];  // プレイヤー2の小計セル
 
-    let subtotal = 0;
+    let subtotal1P = 0;
+    let subtotal2P = 0;
 
     // ワンズからシックスまでのスコアを加算
     for (let i = 0; i < 6; i++) { // ワンズからシックスまで
-        const scoreCell = rows[i].children[currentPlayer]; // ワンズ行からシックス行
-        if (scoreCell.classList.contains("locked")) {
-            subtotal += parseInt(scoreCell.textContent, 10) || 0; // スコアがロックされていれば加算
+        const scoreCell1P = rows[i].children[1]; // プレイヤー1のセル
+        const scoreCell2P = rows[i].children[2]; // プレイヤー2のセル
+
+        // プレイヤー1
+        if (scoreCell1P.classList.contains("locked")) {
+            subtotal1P += parseInt(scoreCell1P.textContent, 10) || 0; // スコアがロックされていれば加算
+        }
+
+        // プレイヤー2
+        if (scoreCell2P.classList.contains("locked")) {
+            subtotal2P += parseInt(scoreCell2P.textContent, 10) || 0; // スコアがロックされていれば加算
         }
     }
 
     // 小計をセルに表示
-    if (currentPlayer === 1) {
-        subtotalCell1P.textContent = `${subtotal}/63`;
-    } else {
-        subtotalCell2P.textContent = `${subtotal}/63`;
-    }
+    subtotalCell1P.textContent = `${subtotal1P}/63`;
+    subtotalCell2P.textContent = `${subtotal2P}/63`;
 }
+
 
 // 初期化時に小計セルに0/63を表示
 function initializeScoreTable() {
