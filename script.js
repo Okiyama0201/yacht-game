@@ -42,7 +42,7 @@ let playerScores = {
 // ダイスを振る
 function rollDice() {
     if (rollCount >= 3) {
-        alert("このターンでの振り直し回数は3回までです！");
+        alert("振り直し回数は3回までです！");
         return;
     }
 
@@ -62,7 +62,7 @@ function rollDice() {
 // ターン情報の更新
 function updateTurnInfo() {
     document.getElementById("turn-info").textContent =
-        `${currentTurn}ターン目: 現在のプレイヤー - ${currentPlayer === 1 ? "1P" : "2P"} (振り直し回数: ${rollCount}/3)`;
+        `${currentTurn}ターン目: 現在のプレイヤー - ${currentPlayer === 1 ? "1P" : "2P"}`;
     // 小計を更新
     updateSubtotal();  // 役を決めたタイミングで小計を更新
     updateBonus();
@@ -81,7 +81,7 @@ function updateDiceDisplay() {
 // ダイスをホールド/解除
 function toggleHold(index) {
     if (rollCount === 0) { // 1回目の振りではホールドを無効にする
-        alert("最初の振りではホールドできません！");
+        alert("現在はホールドできません！");
         return;
     }
     heldDice[index] = !heldDice[index];
@@ -215,10 +215,61 @@ function nextTurn() {
     }
 }
 
+function calculateTotalScore() {
+    let total1p = 0;
+    let total2p = 0;
+
+    // 役ごとの得点を表から取得して合計を計算
+    const roles = [
+        "ワンズ", "ツーズ", "スリーズ", "フォーズ", "ファイブズ", "シックス",
+        "スリーオブアカインド", "フォーオブアカインド", "フルハウス", 
+        "スモールストレート", "ラージストレート", "ヨット", "チャンス"
+    ];
+
+    roles.forEach(role => {
+        // 1Pの得点を取得
+        const score1p = parseInt(document.getElementById(`score-1p-${role}`).textContent) || 0;
+        // 2Pの得点を取得
+        const score2p = parseInt(document.getElementById(`score-2p-${role}`).textContent) || 0;
+
+        total1p += score1p;
+        total2p += score2p;
+    });
+
+    // ボーナス得点を取得
+    const bonus1p = parseInt(document.getElementById("bonus-1p").textContent) || 0;
+    const bonus2p = parseInt(document.getElementById("bonus-2p").textContent) || 0;
+
+    total1p += bonus1p;
+    total2p += bonus2p;
+
+    // 結果を総合得点に表示
+    document.getElementById("total-1p").textContent = total1p;
+    document.getElementById("total-2p").textContent = total2p;
+}
 
 // ゲーム終了処理
 function endGame() {
     alert("ゲーム終了！結果を確認してください。");
+    calculateTotalScore();
+    const total1p = parseInt(document.getElementById('total-1p').textContent, 10);
+    const total2p = parseInt(document.getElementById('total-2p').textContent, 10);
+    
+    let winnerMessage = '';
+    
+    // 得点を比較して勝者を決める
+    if (total1p > total2p) {
+        winnerMessage = '1Pの勝利！';
+    } else if (total1p < total2p) {
+        winnerMessage = '2Pの勝利！';
+    } else {
+        winnerMessage = '引き分け！';
+    }
+    
+    // 結果をHTMLに表示
+    const winnerDisplay = document.getElementById('winner-display');
+    winnerDisplay.textContent = winnerMessage;
+    winnerDisplay.style.display = 'block'; // メッセージを表示する
 }
 
 // ダイスをリセット
