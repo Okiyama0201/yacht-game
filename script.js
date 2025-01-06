@@ -73,7 +73,12 @@ function updateTurnInfo() {
 function updateDiceDisplay() {
     for (let i = 0; i < diceValues.length; i++) {
         const dice = document.getElementById(`dice${i + 1}`);
-        dice.textContent = diceValues[i];
+        
+        // 画像のURLを設定
+        const diceImage = `images/dice${diceValues[i]}.png`;
+        
+        // 画像を表示するように設定
+        dice.innerHTML = `<img src="${diceImage}" alt="Dice ${diceValues[i]}" />`;
         dice.classList.toggle("held", heldDice[i]);
     }
 }
@@ -207,6 +212,7 @@ function nextTurn() {
     }
 
     if (currentTurn > 13) {
+        updateTurnInfo();
         endGame();
     } else {
         rollCount = 0;  // 振り直し回数をリセット
@@ -239,6 +245,8 @@ function calculateTotalScore(playerNumber) {
 
 // ゲーム終了時に総合得点のテーブルを表示
 function endGame() {
+
+    document.getElementById('turn-info').textContent = ''
 
     alert("ゲーム終了！結果を確認してください。");
 
