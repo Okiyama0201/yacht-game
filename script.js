@@ -244,9 +244,18 @@ function calculateTotalScore(playerNumber) {
 }
 
 // ゲーム終了時に総合得点のテーブルを表示
+// ゲーム終了時にサイコロを非表示にし、「タイトルへ戻る」ボタンを表示する
 function endGame() {
+    document.getElementById('turn-info').textContent = '';
 
-    document.getElementById('turn-info').textContent = ''
+    // サイコロを非表示にする
+    document.querySelector('.dice-container').style.display = 'none';
+    
+    // ダイスを振るボタンを非表示にする
+    document.getElementById('roll-button').style.display = 'none';
+    
+    // 「タイトルへ戻る」ボタンを表示する
+    document.getElementById('back-to-title').style.display = 'inline-block';
 
     alert("ゲーム終了！結果を確認してください。");
 
@@ -264,6 +273,12 @@ function endGame() {
     document.getElementById('winner-display').textContent = winner + 'の勝利！';
     document.getElementById('winner-display').style.display = 'block';  // 勝者表示を表示
 }
+
+// タイトルへ戻るボタンのクリックイベント
+document.getElementById('back-to-title').addEventListener("click", function() {
+    window.location.href = "start.html";  // start.htmlに戻る
+});
+
 
 // ダイスをリセット
 function resetDice() {

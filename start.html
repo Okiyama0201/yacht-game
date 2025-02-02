@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>ヨットゲーム - タイトル</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .title-container {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        button {
+            width: 200px;
+            height: 50px;
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-container">
+        <h1>ヨットゲーム</h1>
+        <button id="start-game">ゲームスタート</button>
+        <button id="show-rules">ルール説明</button>
+    </div>
+
+    <!-- ルール説明ポップアップ -->
+    <div id="rule-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>ルール説明</h2>
+            <p>ヨットゲームはサイコロを使ったポーカーのようなゲームです。</p>
+            <p>プレイヤーは順番に5つのサイコロを振り、特定の役を作って得点を競います。</p>
+            <p>最大3回まで振り直しが可能で、ホールド機能を使って特定のダイスを保持できます。</p>
+            <p>全ての役が埋まるとゲーム終了となり、得点の高いプレイヤーが勝利です。</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("start-game").addEventListener("click", function() {
+            window.location.href = "game.html";
+        });
+
+        document.getElementById("show-rules").addEventListener("click", function() {
+            document.getElementById("rule-modal").style.display = "block";
+        });
+
+        document.querySelector(".close-button").addEventListener("click", function() {
+            document.getElementById("rule-modal").style.display = "none";
+        });
+    </script>
+</body>
+</html>

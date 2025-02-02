@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>ヨットゲーム</title>
+</head>
+<body>
+    <header>ヨットゲーム</header>
+    <div id="turn-info">1ターン目: 現在のプレイヤー - 1P</div>
+    <div id="roll-count-display"></div>
+
+        <!-- 勝者表示用の要素を追加 -->
+        <div id="winner-display" style="display: none; font-size: 24px; color: rgb(255, 255, 255); text-align: center; padding: 10px;"></div>
+    
+    <table class="custom-table">
+        <thead>
+            <tr class="no-hover">
+                <td>役</td>
+                <td>1P</td>
+                <td>2P</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>ワンズ</td><td id="score-1p-ワンズ"></td><td id="score-2p-ワンズ"></td></tr>
+            <tr><td>ツーズ</td><td id="score-1p-ツーズ"></td><td id="score-2p-ツーズ"></td></tr>
+            <tr><td>スリーズ</td><td id="score-1p-スリーズ"></td><td id="score-2p-スリーズ"></td></tr>
+            <tr><td>フォーズ</td><td id="score-1p-フォーズ"></td><td id="score-2p-フォーズ"></td></tr>
+            <tr><td>ファイブズ</td><td id="score-1p-ファイブズ"></td><td id="score-2p-ファイブズ"></td></tr>
+            <tr><td>シックス</td><td id="score-1p-シックス"></td><td id="score-2p-シックス"></td></tr>
+            <tr class="total"><td>小計</td><td></td><td></td></tr> 
+            <tr class="bonus"><td>ボーナス</td><td id="bonus-1p"></td><td id="bonus-2p"></td></tr>
+            <tr><td>スリーオブアカインド</td><td id="score-1p-スリーオブアカインド"></td><td id="score-2p-スリーオブアカインド"></td></tr>
+            <tr><td>フォーオブアカインド</td><td id="score-1p-フォーオブアカインド"></td><td id="score-2p-フォーオブアカインド"></td></tr>
+            <tr><td>フルハウス</td><td id="score-1p-フルハウス"></td><td id="score-2p-フルハウス"></td></tr>
+            <tr><td>スモールストレート</td><td id="score-1p-スモールストレート"></td><td id="score-2p-スモールストレート"></td></tr>
+            <tr><td>ラージストレート</td><td id="score-1p-ラージストレート"></td><td id="score-2p-ラージストレート"></td></tr>
+            <tr><td>ヨット</td><td id="score-1p-ヨット"></td><td id="score-2p-ヨット"></td></tr>
+            <tr><td>チャンス</td><td id="score-1p-チャンス"></td><td id="score-2p-チャンス"></td></tr>
+        </tbody>
+    </table>
+    <table class="custom-table total-score" style="display: none;">
+        <tbody>
+            <tr>
+                <td class="total-score">総合得点</td><td id="total-1p"></td><td id="total-2p"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="dice-container">
+        <div class="dice" id="dice1"></div>
+        <div class="dice" id="dice2"></div>
+        <div class="dice" id="dice3"></div>
+        <div class="dice" id="dice4"></div>
+        <div class="dice" id="dice5"></div>
+        <button id="roll-button">ダイスを振る</button>
+    </div>
+
+    <!-- ゲーム終了後に表示されるタイトルへ戻るボタン -->
+    <button id="back-to-title" style="display: none; font-size: 20px; margin-top: 5px; padding: 10px 20px;">タイトルへ戻る</button>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
