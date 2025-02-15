@@ -8,12 +8,18 @@
 </head>
 <body>
     <header>ヨットゲーム</header>
-    <div id="turn-info">1ターン目: 現在のプレイヤー - 1P</div>
+
+    <!-- ゲーム情報エリア -->
+    <div class="game-header">
+        <button id="show-roles">役一覧</button>
+        <div id="turn-info">1ターン目: 現在のプレイヤー - 1P</div>
+    </div>
+
     <div id="roll-count-display"></div>
 
-        <!-- 勝者表示用の要素を追加 -->
-        <div id="winner-display" style="display: none; font-size: 24px; color: rgb(255, 255, 255); text-align: center; padding: 10px;"></div>
-    
+    <!-- 勝者表示用 -->
+    <div id="winner-display" style="display: none; font-size: 24px; color: rgb(255, 255, 255); text-align: center; padding: 10px;"></div>
+
     <table class="custom-table">
         <thead>
             <tr class="no-hover">
@@ -40,13 +46,6 @@
             <tr><td>チャンス</td><td id="score-1p-チャンス"></td><td id="score-2p-チャンス"></td></tr>
         </tbody>
     </table>
-    <table class="custom-table total-score" style="display: none;">
-        <tbody>
-            <tr>
-                <td class="total-score">総合得点</td><td id="total-1p"></td><td id="total-2p"></td>
-            </tr>
-        </tbody>
-    </table>
 
     <div class="dice-container">
         <div class="dice" id="dice1"></div>
@@ -57,9 +56,54 @@
         <button id="roll-button">ダイスを振る</button>
     </div>
 
+    <!-- 役一覧ポップアップ -->
+    <div id="role-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>役一覧</h2>
+            <p>ヨットゲームの各役の説明です。</p>
+
+            <div class="role-section">
+                <h3>ワンズ～シックス</h3>
+                <p>出目の合計を得点として記録します。</p>
+            </div>
+
+            <div class="role-section">
+                <h3>スリーオブアカインド</h3>
+                <p>同じ目が3つ以上揃った場合のサイコロの合計。</p>
+            </div>
+
+            <div class="role-section">
+                <h3>フォーオブアカインド</h3>
+                <p>同じ目が4つ以上揃った場合のサイコロの合計。</p>
+            </div>
+
+            <div class="role-section">
+                <h3>フルハウス</h3>
+                <p>一つの数字が書かれたダイスを3つと、別の数字が書かれたダイスが2つ揃うと25点。</p>
+            </div>
+
+            <div class="role-section">
+                <h3>スモールストレート</h3>
+                <p>4つの連続した数字が揃うと15点。</p>
+                <p>（例: 1,2,3,4 または 2,3,4,5 など）</p>
+            </div>
+
+            <div class="role-section">
+                <h3>ラージストレート</h3>
+                <p>5つの連続した数字が揃うと30点。</p>
+                <p>（例: 1,2,3,4,5 または 2,3,4,5,6）</p>
+            </div>
+
+            <div class="role-section">
+                <h3>ヨット</h3>
+                <p>5つの目がすべて同じ場合50点。</p>
+            </div>
+        </div>
+    </div>
+
     <!-- ゲーム終了後に表示されるタイトルへ戻るボタン -->
     <button id="back-to-title" style="display: none; font-size: 20px; margin-top: 5px; padding: 10px 20px;">タイトルへ戻る</button>
-
 
     <script src="script.js"></script>
 </body>

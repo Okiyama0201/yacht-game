@@ -459,6 +459,25 @@ scoreTableCells.forEach((cell) => {
     });
 });
 
+// 役一覧のポップアップを開く
+document.getElementById("show-roles").addEventListener("click", function() {
+    document.getElementById("role-modal").style.display = "block";
+});
+
+// ポップアップを閉じる
+document.querySelector("#role-modal .close-button").addEventListener("click", function() {
+    document.getElementById("role-modal").style.display = "none";
+});
+
+// 外側をクリックしたら閉じる
+window.addEventListener("click", function(event) {
+    let modal = document.getElementById("role-modal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+});
+
+
 
 // 初期化
 updateTurnInfo();

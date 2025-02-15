@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>ヨットゲーム - タイトル</title>
+    <title>ヨットゲーム</title>
     <style>
         body {
             text-align: center;
@@ -29,13 +29,16 @@
         }
         .modal-content {
             background-color: white;
-            margin: 15% auto;
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 50%;
             border-radius: 10px;
             position: relative;
+            max-height: 80vh;  /* 最大高さを設定 */
+            overflow-y: auto;  /* 縦スクロールを許可 */
         }
+
         .close-button {
             position: absolute;
             top: 10px;
@@ -68,16 +71,66 @@
     </div>
 
     <!-- ルール説明ポップアップ -->
-    <div id="rule-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>ルール説明</h2>
-            <p>ヨットゲームはサイコロを使ったポーカーのようなゲームです。</p>
-            <p>プレイヤーは順番に5つのサイコロを振り、特定の役を作って得点を競います。</p>
-            <p>最大3回まで振り直しが可能で、ホールド機能を使って特定のダイスを保持できます。</p>
-            <p>全ての役が埋まるとゲーム終了となり、得点の高いプレイヤーが勝利です。</p>
+    <!-- ルール説明ポップアップ -->
+<div id="rule-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>ルール説明<h2>
+
+        <div class="rule-section">
+            <img src="images/scorecard.png" alt="スコアボード">
+            <div class="rule-text">
+                <h3>ゲームの目標</h3>
+                <p>ヨットゲームの目標は、特定のダイスを組み合わせて役を作り得点を競うゲームです。</p>
+                <p>ゲーム画面にはスコアボード、ダイスエリアがあります。</p>
+            </div>
+        </div>
+
+        <div class="rule-section">
+            <img src="images/roll-dice.png" alt="ダイスを振る">
+            <div class="rule-text">
+                <h3>ダイスを振る</h3>
+                <p>あなたのターンが始まったら、「ダイスを振る」ボタンを押すとダイスを振ることができます。</p>
+                <p>プレイヤーはターンごとにダイスを3回振ることができます。</p>
+            </div>
+        </div>
+
+        <div class="rule-section">
+            <img src="images/hold-dice.png" alt="ダイスのホールド">
+            <div class="rule-text">
+                <h3>ダイスのホールド</h3>
+                <p>1回目のダイスを振った後にダイスをクリックすることで「ホールド」することができます。</p>
+                <p>ホールドしたダイスの目は次のロールでは変わりません。もう一度クリックすると解除されます。</p>
+            </div>
+        </div>
+
+        <div class="rule-section">
+            <img src="images/point-get.png" alt="得点を獲得する方法">
+            <div class="rule-text">
+                <h3>得点を獲得する方法</h3>
+                <p>プレイヤーは、特定の役（ワンズ、ツーズ、フルハウス、ヨットなど）に対応する出目を揃えて得点を獲得します。</p>
+            </div>
+        </div>
+
+        <div class="rule-section">
+            <img src="images/select-point.png" alt="役の選び方">
+            <div class="rule-text">
+                <h3>役の選び方</h3>
+                <p>プレイヤーは、自分のターン中にサイコロを振った後、どの役に得点を記録するかを選びます。</p>
+                <p>一度選んだ役は灰色になり変更できません。</p>
+            </div>
+        </div>
+
+        <div class="rule-section">
+            <img src="images/bonus.png" alt="ボーナス">
+            <div class="rule-text">
+                <h3>ボーナス</h3>
+                <p>「ワンズ」から「シックス」までの合計点が 63点以上 になると 35点のボーナス を獲得します。</p>
+            </div>
         </div>
     </div>
+</div>
+
 
     <script>
         document.getElementById("start-game").addEventListener("click", function() {
