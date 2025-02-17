@@ -218,24 +218,54 @@ function endGame() {
     document.getElementById('turn-info').textContent = '';
 
     document.querySelector('.dice-container').style.display = 'none';
-    
     document.getElementById('roll-button').style.display = 'none';
-    
+
     document.getElementById('back-to-title').style.display = 'inline-block';
 
     alert("ゲーム終了！結果を確認してください。");
 
     let totalScore1p = calculateTotalScore(1);  
-    let totalScore2p = calculateTotalScore(2); 
+    let totalScore2p = calculateTotalScore(2);  
 
-    document.querySelector('.total-score').style.display = 'table';  
-    document.getElementById('total-1p').textContent = totalScore1p; 
-    document.getElementById('total-2p').textContent = totalScore2p; 
+    console.log("プレイヤー1の総合得点:", totalScore1p);
+    console.log("プレイヤー2の総合得点:", totalScore2p);
 
-    let winner = totalScore1p > totalScore2p ? '1P' : (totalScore1p < totalScore2p ? '2P' : '引き分け');
-    document.getElementById('winner-display').textContent = winner + 'の勝利！';
-    document.getElementById('winner-display').style.display = 'block';  
+    let totalScoreTable = document.querySelector('.total-score');
+    if (totalScoreTable) {
+        totalScoreTable.style.display = 'table';
+    } else {
+        console.error("総合得点のテーブルが見つかりません！");
+    }
+
+    let total1pCell = document.getElementById('total-1p');
+    let total2pCell = document.getElementById('total-2p');
+
+    if (total1pCell && total2pCell) {
+        total1pCell.textContent = isNaN(totalScore1p) ? 0 : totalScore1p;
+        total2pCell.textContent = isNaN(totalScore2p) ? 0 : totalScore2p;
+    } else {
+        console.error("総合得点のセルが見つかりません！");
+    }
+
+    let winnerText = "";
+    if (totalScore1p > totalScore2p) {
+        winnerText = "1Pの勝利！";
+    } else if (totalScore1p < totalScore2p) {
+        winnerText = "2Pの勝利！";
+    } else {
+        winnerText = "引き分け";
+    }
+
+    let winnerDisplay = document.getElementById('winner-display');
+    if (winnerDisplay) {
+        winnerDisplay.textContent = winnerText;
+        winnerDisplay.style.display = 'block';
+    } else {
+        console.error("勝者表示エリアが見つかりません！");
+    }
 }
+
+
 
 document.getElementById('back-to-title').addEventListener("click", function() {
     window.location.href = "start.html";  
